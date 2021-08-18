@@ -29,3 +29,17 @@ def MyaddPage(request):
             return HttpResponse("error in Serialization")
     else:
         return HttpResponse("No get method is allowed")
+
+@csrf_exempt
+def singleview(request,id):
+    try:
+        todo = Todo.objects.get(id = id)
+        if(request.method == "GET"):
+            todo_serializer = TodoSerializers(todo)
+            return JsonResponse(todo_serializer.data,safe=False)
+
+
+
+
+    except Todo.DoesNotExist:
+        return HttpResponse("Invalid ID")
